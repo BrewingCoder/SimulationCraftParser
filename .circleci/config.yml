@@ -14,8 +14,16 @@ jobs:
             name: Build
             command: dotnet build
         - run:
+            name: trx Tool
+            command: dotnet tool install -g trx2junit
+        - run:
             name: "Run Application Tests"
-            command: dotnet test -v n --results-directory:test_coverage --collect:"Code Coverage"
+            command: dotnet test -v n --logger "trx;LogFileName=test_results.trx"
+        - run:
+            name: "trx convert"
+            command: trx2junit test_results.trx --output ../results
+        - store_test_results:
+            path: results
 
 
  
