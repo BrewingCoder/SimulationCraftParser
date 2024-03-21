@@ -1,10 +1,11 @@
 #CircleCI Configuration
 version : 2.1
-orbs:
-  windows: circleci/windows@2.2.0
+
 
 jobs:
   build:
+    docker:
+      - image: mcr.microsoft.com/dotnet/sdk:8.0
     description: Build application with Release configuration
     executor:
       name: windows/default
