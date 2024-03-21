@@ -7,26 +7,14 @@ jobs:
     steps:
         - checkout 
         
-        - run:
-            name: Install dotnet dependencies
-            command: dotnet restore
-        - run:
-            name: Build
-            command: dotnet build
-        - run:
-            name: trx Tool
-            command: dotnet tool install -g trx2junit
-        - run:
-            name: "Run Application Tests"
-            command: dotnet test -v n --logger "trx;LogFileName=test_results.trx"
-        - run:
-            name: "trx path"
-            command: echo 'export PATH="$PATH:/root/.dotnet/tools"' >> "$BASH_ENV"
-        - run:
-            name: "trx convert"
-            command: trx2junit test_results.trx --output ../results
+        - run: dotnet restore
+        - run: dotnet build
+        - run: dotnet tool install -g trx2junit
+        - run: dotnet test --no-build --logger "trx"
+        - run: echo 'export PATH="$PATH:/root/.dotnet/tools"' >> "$BASH_ENV"
+        - run: trx2junit tests/**/TestResults/*.trx
         - store_test_results:
-            path: results
+            path: tests/TestResults
 
 
  
