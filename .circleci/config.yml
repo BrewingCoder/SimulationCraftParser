@@ -13,6 +13,9 @@ jobs:
         - run:
             name: Build
             command: dotnet build
+        - run:
+            name: "Run Application Tests"
+            command: dotnet test -v n --results-directory:test_coverage --collect:"Code Coverage"
 
 
  
