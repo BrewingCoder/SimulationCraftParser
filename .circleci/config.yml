@@ -1,14 +1,9 @@
 #CircleCI Configuration
 version : 2.1
-
-
 jobs:
   build:
     docker:
       - image: mcr.microsoft.com/dotnet/sdk:8.0
-    description: Build application with Release configuration
-    executor:
-      name: windows/default
     steps:
        - checkout 
        - run:
