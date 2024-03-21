@@ -5,15 +5,18 @@ jobs:
     docker:
       - image: mcr.microsoft.com/dotnet/sdk:8.0
     steps:
-       - checkout 
-       
-       - run:
-         name: Restore NuGet Packages
-         command: dotnet restore
+        - checkout 
+        
+        - run:
+            name: Install dotnet dependencies
+            command: restore
+        - run:
+            name: Build
+            command: dotnet build
 
-       - run:
-          name: "Build Application according to some given configuration"
-          command: dotnet build --configuration Debug
+
+ 
+
 workflows:
   test_and_build:
     jobs:
