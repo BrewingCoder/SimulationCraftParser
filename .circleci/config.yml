@@ -12,7 +12,7 @@ jobs:
         - run: dotnet tool install -g trx2junit
         - run: dotnet test --no-build --logger "trx"
         - run: echo 'export PATH="$PATH:/root/.dotnet/tools"' >> "$BASH_ENV"
-        - run: trx2junit SimCParserTests/**/TestResults/*.trx
+        - run: trx2junit ./SimCParserTests/TestResults/*.trx
         - store_test_results:
             path: SimCParserTests/TestResults
 
