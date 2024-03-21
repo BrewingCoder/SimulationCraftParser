@@ -6,9 +6,14 @@ jobs:
       - image: mcr.microsoft.com/dotnet/sdk:8.0
     steps:
        - checkout 
+       
+       - run:
+         name: Restore NuGet Packages
+         command: dotnet restore
+
        - run:
           name: "Build Application according to some given configuration"
-          command: dotnet.exe build --configuration Debug
+          command: dotnet build --configuration Debug
 workflows:
   test_and_build:
     jobs:
