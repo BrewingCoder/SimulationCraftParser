@@ -4,7 +4,8 @@
         "language": "CSharp",
         "listeners": false,
         "visitors": true,
-        "outputDir" : "antlr"
+      "outputDir": "antlr",
+      "package": "SimCParser.antlr"
     },
     "editor.renderWhitespace": "all",
 }

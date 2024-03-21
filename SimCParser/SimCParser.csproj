@@ -9,6 +9,28 @@
 
   <ItemGroup>
     <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
+    <PackageReference Include="Antlr4BuildTasks" Version="12.8.0" PrivateAssets="all" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Antlr4 Include="SimcLexer.g4" >
+      <Error>true</Error>
+      <Package>SimCParser.antlr</Package>
+      
+    </Antlr4>
+    <Antlr4 Include="SimcParser.g4">
+      <Error>true</Error>
+      <Listener>false</Listener>
+      <Visitor>true</Visitor>
+      <Package>SimCParser.antlr</Package>
+
+    </Antlr4>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="antlr\" />
+  </ItemGroup>
+  
+  
 
 </Project>

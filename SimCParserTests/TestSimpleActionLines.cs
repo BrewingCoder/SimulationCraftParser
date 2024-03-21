@@ -1,5 +1,6 @@
 using Antlr4.Runtime;
 using SimCParser;
+using SimCParser.antlr;
 using SimCParser.structure;
 
 namespace SimCParserTests;
