@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.ComTypes;
 using Antlr4.Runtime.Misc;
 using SimCParser.antlr;
 using SimCParser.structure;
@@ -15,22 +16,34 @@ public class BasicSimcVisitor : SimcParserBaseVisitor<object>
         {
             var child = ctx.GetChild(i);
             
-            if (child is SimcParser.SimpleActionContext actionContext)
+            switch (child)
             {
-                if (VisitSimpleAction(actionContext) is SimpleAction simpleAction)
+                case SimcParser.SimpleActionContext actionContext:
                 {
-                    simpleAction.Sequence = actions.Count + 1;
-                    actions.Add(simpleAction);
+                    if (VisitSimpleAction(actionContext) is SimpleAction simpleAction)
+                    {
+                        simpleAction.Sequence = actions.Count + 1;
+                        actions.Add(simpleAction);
+                    }
+                    break;
                 }
-            }
-
-
-            if (child is SimcParser.ConditionalActionContext conditionalActionContext)
-            {
-                if (VisitConditionalAction(conditionalActionContext) is ConditionalAction conditionalAction)
+                case SimcParser.ConditionalActionContext conditionalActionContext:
                 {
-                    conditionalAction.Sequence = actions.Count + 1;
-                    actions.Add(conditionalAction);
+                    if (VisitConditionalAction(conditionalActionContext) is ConditionalAction conditionalAction)
+                    {
+                        conditionalAction.Sequence = actions.Count + 1;
+                        actions.Add(conditionalAction);
+                    }
+                    break;
+                }
+                case SimcParser.VariableActionContext variableActionContext:
+                {
+                    if (VisitVariableAction(variableActionContext) is VariableAction variableAction)
+                    {
+                        variableAction.Sequence = actions.Count + 1;
+                        actions.Add(variableAction);
+                    }
+                    break;
                 }
             }
         }
@@ -61,8 +74,36 @@ public class BasicSimcVisitor : SimcParserBaseVisitor<object>
         return conditionalAction;
     }
 
+    public override object VisitVariableAction(SimcParser.VariableActionContext ctx)
+    {
+        var variableAction = new VariableAction
+        {
+            ActionType = ACTIONTYPE.VariableAction,
+            ActionClause = ctx.actionpart().GetText(),
+            ActionName = ctx.VARIABLEASSIGN().GetText(),
+            VariableName = VisitDotted_name(ctx.variableName) as string,
+            VariableOperator = ctx.variableOperator.Text,
+            Qualifier = VisitQualifier(ctx.qualifier()) as string,
+            VariableValue = VisitExp(ctx.variableValue) as string,
+            VariableCondition =VisitExp(ctx.exp_condition) as string,
+            ActIf = VisitExp(ctx.exp_if) as string
+        };
+        return variableAction;
+    }
+
     public override object VisitDotted_name(SimcParser.Dotted_nameContext ctx)
     {
-        return ctx.GetText();
+        return ctx==null ? string.Empty : ctx.GetText();
     }
+
+    public override object VisitQualifier(SimcParser.QualifierContext ctx)
+    {
+        return ctx==null ? string.Empty : ctx.GetText();
+    }
+
+    public override object VisitExp(SimcParser.ExpContext ctx)
+    {
+        return ctx==null ? string.Empty : ctx.GetText();
+    }
+
 }
